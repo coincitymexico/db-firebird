@@ -22,7 +22,7 @@ class ConfigFB
      */
     public static function connect(): void
     {
-        self::$db_connection = new FireBird(self::$db_host, self::$db_user, self::$db_pass);
+        self::$db_connection = new Firebird(self::$db_host, self::$db_user, self::$db_pass);
     }
 
     /**
@@ -34,6 +34,6 @@ class ConfigFB
      */
     public static function connectCustom(string $db_host, string $db_user, string $db_pass): void
     {
-        self::$db_connection = new FireBird($db_host, $db_user, $db_pass);
+        self::$db_connection = new Firebird($db_host, $db_user, $db_pass);
     }
 }
