@@ -39,8 +39,22 @@ class Firebird
     function connectToFb(): void
     {
         $this->dbConn = ibase_connect($this->host, $this->dbUser, $this->dbPass, "UTF8");
+        if (!$this->dbConn && ConfigFB::$exceptions) {
+            throw new Exception('Acceso Denegado al servidor Firebird!');
+        }
+    }
+
+    /**
+     * Verifica si hay conexion con la base de datos
+     * @return bool
+     */
+    public function checkConnection(): bool
+    {
+        $this->dbConn = ibase_connect($this->host, $this->dbUser, $this->dbPass, "UTF8");
         if (!$this->dbConn) {
-            throw new Exception('Acceso Denegado!');
+            return false;
+        } else {
+            return true;
         }
     }
 

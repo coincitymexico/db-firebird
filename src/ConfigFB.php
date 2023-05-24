@@ -7,6 +7,10 @@ use Exception;
 class ConfigFB
 {
     /**
+     * @var bool $exceptions
+     */
+    public static $exceptions = true;
+    /**
      * @var
      */
     public static $db_connection;

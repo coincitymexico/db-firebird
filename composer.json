@@ -2,7 +2,7 @@
   "name": "coincitymexico/db-firebird",
   "type": "library",
   "license": "MIT",
-  "version": "v0.0.1",
+  "version": "v0.0.2",
   "autoload": {
     "files": [],
     "psr-4": {
