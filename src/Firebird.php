@@ -14,6 +14,7 @@ class Firebird
     private string $dbUser;
     private string $dbPass;
     public $dbConn;
+    public static bool $connected = false;
 
 
     /**
@@ -38,9 +39,26 @@ class Firebird
      */
     function connectToFb(): void
     {
-        $this->dbConn = ibase_connect($this->host, $this->dbUser, $this->dbPass, "UTF8");
-        if (!$this->dbConn && ConfigFB::$exceptions) {
-            throw new Exception('Acceso Denegado al servidor Firebird!');
+        if(ConfigFB::$exceptions){
+            $this->dbConn = ibase_connect($this->host, $this->dbUser, $this->dbPass, "UTF8");
+            if (!$this->dbConn) {
+                Firebird::$connected = false;
+                throw new Exception('Acceso Denegado al servidor Firebird!');
+            }
+        }else {
+            try {
+                $this->dbConn = ibase_connect($this->host, $this->dbUser, $this->dbPass, "UTF8");
+                if (!$this->dbConn && ConfigFB::$exceptions) {
+                    Firebird::$connected = false;
+                    throw new Exception('Acceso Denegado al servidor Firebird!');
+                }
+                if (!$this->dbConn){
+                    Firebird::$connected = false;
+                }
+            } catch (Exception $e) {
+                Firebird::$connected = false;
+                $this->dbConn = false;
+            }
         }
     }
 
@@ -50,12 +68,7 @@ class Firebird
      */
     public function checkConnection(): bool
     {
-        $this->dbConn = ibase_connect($this->host, $this->dbUser, $this->dbPass, "UTF8");
-        if (!$this->dbConn) {
-            return false;
-        } else {
-            return true;
-        }
+        return Firebird::$connected;
     }
 
     /**
@@ -65,6 +78,15 @@ class Firebird
     function closeFb(): void
     {
         ibase_close($this->dbConn);
+    }
+
+    /**
+     * Desconecta de la base de datos
+     * @return void
+     */
+    public function disconnect(): void
+    {
+        $this->closeFb();
     }
 
     /**

@@ -13,7 +13,7 @@ class ConfigFB
     /**
      * @var
      */
-    public static $db_connection;
+    public static ?Firebird $db_connection;
 
     /**
      * @var string
@@ -39,5 +39,14 @@ class ConfigFB
     public static function connectCustom(string $db_host, string $db_user, string $db_pass): void
     {
         self::$db_connection = new Firebird($db_host, $db_user, $db_pass);
+    }
+
+    /**
+     * Disconnect from Firebird
+     * @return void
+     */
+    public static function disconnect(): void
+    {
+        self::$db_connection->disconnect();
     }
 }
