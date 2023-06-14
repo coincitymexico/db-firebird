@@ -25,10 +25,10 @@ class Select
         if (isset($sql["table"])) {
             $Statement .= " from " . $sql["table"];
         } else {
-            $error["type"] = "Error";
+            $error["type"] = "error";
             $error["query"] = $Statement;
             $error["no"] = "200";
-            $error["result"] = "Query sin tabla, incluye TABLE a tu consulta";
+            $error["message"] = "Query sin tabla, incluye TABLE a tu consulta";
             return $error;
         }
 
@@ -80,21 +80,21 @@ class Select
             }
             //Si $view esta declarado significa que se han obtenido registros y los enviamos de regreso para manipular esta informacion
             if (isset($view)) {
-                $result["type"] = "Success";
+                $result["type"] = "success";
                 $result["query"] = $db_Query;
                 $result["no"] = "100";
-                $result["result"] = $view;
+                $result["message"] = $view;
             } else {// De lo contrario devolvemos error sin resultados para la consulta
                 $result["type"] = "error";
                 $result["query"] = $db_Query;
                 $result["no"] = "101";
-                $result["result"] = "Sin resultados";
+                $result["message"] = "Sin resultados";
             }
         } else {//Si se ha producido un error recolectamos informacion para mostrar el numero de error Firebird, el mensaje y con que query se ha producido este error.
             $result["type"] = "error";
             $result["query"] = $db_Query;
             $result["no"] = ConfigFB::$db_connection->noError;
-            $result["result"] = ConfigFB::$db_connection->isError;
+            $result["message"] = ConfigFB::$db_connection->isError;
             echo ConfigFB::$db_connection->isError;
         }
         //Liberamos la informacion de la Query
