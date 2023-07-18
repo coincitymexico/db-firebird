@@ -45,6 +45,7 @@ class Firebird
                 Firebird::$connected = false;
                 throw new Exception('Acceso Denegado al servidor Firebird!');
             }
+            Firebird::$connected = true;
         }else {
             try {
                 $this->dbConn = ibase_connect($this->host, $this->dbUser, $this->dbPass, "UTF8");
@@ -55,6 +56,7 @@ class Firebird
                 if (!$this->dbConn){
                     Firebird::$connected = false;
                 }
+                Firebird::$connected = true;
             } catch (Exception $e) {
                 Firebird::$connected = false;
                 $this->dbConn = false;
